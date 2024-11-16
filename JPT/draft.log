@@ -1,0 +1,53 @@
+Starting Dynare (version 6.1).
+Calling Dynare with arguments: none
+Starting preprocessing of the model file ... 
+WARNING: in the 'steady_state_model' block, variable 'y' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'k' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'L' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'rho' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'w' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 's' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'ppi' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'c' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'lambda' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'R' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'u' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'phi' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'i' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'kbar' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'x' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'gw' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'y_star' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'k_star' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'L_star' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'rho_star' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'w_star' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 's_star' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'c_star' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'lambda_star' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'R_star' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'u_star' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'phi_star' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'i_star' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'kbar_star' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'x_star' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'gw_star' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'z' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'b' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'g' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'mu' is not assigned a value 
+WARNING: in the 'steady_state_model' block, variable 'etamp' is not assigned a value 
+Found 36 equation(s). 
+Evaluating expressions... 
+Computing static model derivatives (order 1). 
+Normalizing the static model... 
+Normalization failed with cutoff, trying symbolic normalization... 
+Could not normalize the static model. Variable k_star is not in the maximum cardinality matching. 
+Computing dynamic model derivatives (order 2). 
+Normalizing the dynamic model... 
+Normalization failed with cutoff, trying symbolic normalization... 
+Could not normalize the dynamic model. Variable ppi is not in the maximum cardinality matching. 
+Preprocessing completed. 
+Preprocessing time: 0h00m00s.
+
+You did not declare endogenous variables after the estimation/calib_smoother command.
