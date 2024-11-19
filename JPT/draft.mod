@@ -9,13 +9,13 @@ varexo eps_z, eps_mu, eps_mp, eps_g, eps_p, eps_w, eps_b;
 
 // Declare parameters (59 parameters)
 parameters aalpha, delta, ip, iw, gammam, h, lambda_p_ss, lambda_w_ss, L_ss, pi_ss, bbeta, nu, zeta_p, zeta_w, xi, s2prime, phi_pi, phi_x, phi_dx, rho_R, rho_mp, rho_z, rho_g, rho_mu, rho_p, rho_w, rho_b, theta_p, theta_w,
-           g_ss, kappa, rho_ss, w_ss, kLratio, FLratio, F, yLratio, iLratio, cLratio, k_ss, y_ss, i_ss, c_ss, R_ss, kLstarratio, FLstarratio, Fstar, yLstarratio,
+           theta_mp, theta_z, theta_g, theta_mu, theta_b, g_ss, kappa, rho_ss, w_ss, kLratio, FLratio, F, yLratio, iLratio, cLratio, k_ss, y_ss, i_ss, c_ss, R_ss, kLstarratio, FLstarratio, Fstar, yLstarratio,
            iLstarratio, cLstarratio, kstar_ss, ystar_ss, istar_ss, cstar_ss, wstar_ss, kappa_w;
 
 // Calibration values for parameters
 delta = 0.025; 
 aalpha = 0.3;
-bbeta = 0.995;  
+bbeta = 0.25;  
 gammam = 0.5;
 nu = 2;
 h = 0.5;  
@@ -42,6 +42,11 @@ phi_dx = 0.25;
 theta_p = 0.75; // Price rigidity parameter
 theta_w = 0.75; // Wage rigidity parameter
 L_ss = 0.3; // Initial value for steady-state labor
+theta_mp = 0.10;
+theta_z = 0.5;
+theta_g = 0.5;
+theta_mu = 0.5;
+theta_b = 0.10;
 
 // Compute parameters that depend on calibrated values (must be before 'model' block)
 g_ss = 1 / (1 - 0.22); // Fixed g_ss calculation
@@ -259,7 +264,7 @@ estimated_params;
     lambda_w_ss, normal_pdf, 0.15, 0.05;
     L_ss, normal_pdf, 0.3, 0.1;
     pi_ss, normal_pdf, 1.02, 0.1;
-    bbeta, gamma_pdf, 0.995, 0.005;
+    bbeta, gamma_pdf, 0.25, 0.05;
     nu, gamma_pdf, 2, 0.75;
     zeta_p, beta_pdf, 0.84, 0.05;
     zeta_w, beta_pdf, 0.7, 0.05;
@@ -274,8 +279,13 @@ estimated_params;
     rho_p, beta_pdf, 0.6, 0.2;
     rho_w, beta_pdf, 0.6, 0.2;
     rho_b, beta_pdf, 0.6, 0.2;
-    theta_p, beta_pdf, 0.75, 0.05;
-    theta_w, beta_pdf, 0.75, 0.05;
+    theta_p, INV_GAMMA1_PDF, 0.5, 1;
+    theta_w, INV_GAMMA1_PDF, 0.5, 1;
+    theta_mp, INV_GAMMA1_PDF, 0.10, 1.00;
+    theta_z, INV_GAMMA1_PDF, 0.50, 1.00;
+    theta_g, INV_GAMMA1_PDF, 0.50, 1.00;
+    theta_mu, INV_GAMMA1_PDF, 0.50, 1.00;
+    theta_b, INV_GAMMA1_PDF, 0.10, 1.00;
 end;
 
 // Fix parameters causing issues
@@ -293,7 +303,7 @@ estimated_params_init;
     lambda_w_ss, 0.15;
     L_ss, 0.3;
     pi_ss, 1.02;
-    bbeta, 0.995;
+    bbeta, 0.25;
     nu, 2;
     zeta_p, 0.84;
     zeta_w, 0.7;
@@ -308,8 +318,13 @@ estimated_params_init;
     rho_p, 0.6;
     rho_w, 0.6;
     rho_b, 0.6;
-    theta_p, 0.75;
-    theta_w, 0.75;
+    theta_p, 0.5;
+    theta_w, 0.5;
+    theta_mp, 0.10;
+    theta_z, 0.50;
+    theta_g, 0.50;
+    theta_mu, 0.50;
+    theta_b, 0.10;
 end;
 
 
