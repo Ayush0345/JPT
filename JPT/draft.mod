@@ -7,16 +7,19 @@ var y, k, L, rho, w, s, ppi, c, lambda, R, u, phi, i, kbar, x, gw, y_star, k_sta
 // Declare exogenous variables (shocks)
 varexo eps_z, eps_mu, eps_mp, eps_g, eps_p, eps_w, eps_b;
 
+// Observed variables for estimation
+varobs y c i;
+
 // Declare parameters (59 parameters)
 parameters aalpha, delta, ip, iw, gammam, h, lambda_p_ss, lambda_w_ss, L_ss, pi_ss, bbeta, nu, zeta_p, zeta_w, xi, s2prime, phi_pi, phi_x, phi_dx, rho_R, rho_mp, rho_z, rho_g, rho_mu, rho_p, rho_w, rho_b, theta_p, theta_w,
-           theta_mp, theta_z, theta_g, theta_mu, theta_b, g_ss, kappa, rho_ss, w_ss, kLratio, FLratio, F, yLratio, iLratio, cLratio, k_ss, y_ss, i_ss, c_ss, R_ss, kLstarratio, FLstarratio, Fstar, yLstarratio,
+           theta_mp, theta_g, theta_mu, theta_b, g_ss, kappa, rho_ss, w_ss, kLratio, FLratio, F, yLratio, iLratio, cLratio, k_ss, y_ss, i_ss, c_ss, R_ss, kLstarratio, FLstarratio, Fstar, yLstarratio,
            iLstarratio, cLstarratio, kstar_ss, ystar_ss, istar_ss, cstar_ss, wstar_ss, kappa_w;
 
 // Calibration values for parameters
 delta = 0.025; 
 aalpha = 0.3;
-bbeta = 0.25;  
-gammam = 0.5;
+bbeta = 0.99;  
+gammam = 0.005;
 nu = 2;
 h = 0.5;  
 zeta_p = 0.84;
@@ -24,7 +27,7 @@ zeta_w = 0.7;
 ip = 0.24;
 lambda_w_ss = 0.15;
 lambda_p_ss = 0.15;
-pi_ss = 1.02; // Steady-state inflation
+pi_ss = 1.005; // Steady-state inflation
 iw = 0.5; // Wage stickiness parameter
 xi = 5; // Elasticity parameter
 s2prime = 0.5; // Sensitivity parameter
@@ -32,7 +35,7 @@ rho_R = 0.8;
 rho_mp = 0.4;
 rho_z = 0.9;
 rho_g = 0.6;
-rho_mu = 0.5;
+rho_mu = 0.7;
 rho_p = 0.7;
 rho_w = 0.7;
 rho_b = 0.6;
@@ -43,7 +46,6 @@ theta_p = 0.75; // Price rigidity parameter
 theta_w = 0.75; // Wage rigidity parameter
 L_ss = 0.3; // Initial value for steady-state labor
 theta_mp = 0.10;
-theta_z = 0.5;
 theta_g = 0.5;
 theta_mu = 0.5;
 theta_b = 0.10;
@@ -232,13 +234,13 @@ end;
 
 // Shock specification (model shocks)
 shocks;
-    var eps_z; stderr 0.1^2;
-    var eps_p; stderr 0.14^2;
-    var eps_mp; stderr 0.22^2;
-    var eps_mu; stderr 6.03^2;
-    var eps_g; stderr 0.35^2;
-    var eps_w; stderr 0.1^2;
-    var eps_b; stderr 0.1^2;
+    var eps_z; stderr 0.1;
+    var eps_p; stderr 0.14;
+    var eps_mp; stderr 0.22;
+    var eps_mu; stderr 6.03;
+    var eps_g; stderr 0.35;
+    var eps_w; stderr 0.1;
+    var eps_b; stderr 0.1;
 end;
 
 // Check residuals
@@ -255,81 +257,87 @@ check;
 
 // Estimated parameters
 estimated_params;
-    aalpha, beta_pdf, 0.3, 0.05;
-    ip, beta_pdf, 0.24, 0.05;
-    iw, beta_pdf, 0.5, 0.15;
-    gammam, normal_pdf, 0.5, 0.03;
-    h, beta_pdf, 0.5, 0.1;
+    aalpha, beta_pdf, 0.33, 0.05; 
+    bbeta, beta_pdf, 0.99, 0.002;
+    nu, gamma_pdf, 2.0, 0.5;
+    zeta_p, beta_pdf, 0.75, 0.05;
+    zeta_w, beta_pdf, 0.75, 0.05;
+    phi_pi, normal_pdf, 1.5, 0.25;
+    phi_x, normal_pdf, 0.125, 0.05;
+    rho_R, beta_pdf, 0.8, 0.1;
+    rho_z, beta_pdf, 0.85, 0.1;
+    rho_g, beta_pdf, 0.85, 0.1;
+    rho_mu, beta_pdf, 0.7, 0.1;
+    rho_mp, beta_pdf, 0.4, 0.1;
+    rho_p, beta_pdf, 0.5, 0.1;
+    rho_w, beta_pdf, 0.5, 0.1;
+    rho_b, beta_pdf, 0.7, 0.1;
+    h, beta_pdf, 0.7, 0.1;
     lambda_p_ss, normal_pdf, 0.15, 0.05;
     lambda_w_ss, normal_pdf, 0.15, 0.05;
+    iw, beta_pdf, 0.5, 0.1;
+    ip, beta_pdf, 0.25, 0.1;
+    xi, gamma_pdf, 5.0, 1.0;
+    s2prime, gamma_pdf, 4.0, 1.0;
+    gammam, normal_pdf, 0.005, 0.003;
     L_ss, normal_pdf, 0.3, 0.1;
-    pi_ss, normal_pdf, 1.02, 0.1;
-    bbeta, gamma_pdf, 0.25, 0.05;
-    nu, gamma_pdf, 2, 0.75;
-    zeta_p, beta_pdf, 0.84, 0.05;
-    zeta_w, beta_pdf, 0.7, 0.05;
-    s2prime, gamma_pdf, 4, 1;
-    phi_pi, normal_pdf, 1.7, 0.3;
-    phi_dx, normal_pdf, 0.13, 0.05;
-    rho_R, beta_pdf, 0.6, 0.2;
-    rho_mp, beta_pdf, 0.4, 0.2;
-    rho_z, beta_pdf, 0.6, 0.2;
-    rho_g, beta_pdf, 0.6, 0.2;
-    rho_mu, beta_pdf, 0.6, 0.2;
-    rho_p, beta_pdf, 0.6, 0.2;
-    rho_w, beta_pdf, 0.6, 0.2;
-    rho_b, beta_pdf, 0.6, 0.2;
-    theta_p, INV_GAMMA1_PDF, 0.5, 1;
-    theta_w, INV_GAMMA1_PDF, 0.5, 1;
-    theta_mp, INV_GAMMA1_PDF, 0.10, 1.00;
-    theta_z, INV_GAMMA1_PDF, 0.50, 1.00;
-    theta_g, INV_GAMMA1_PDF, 0.50, 1.00;
-    theta_mu, INV_GAMMA1_PDF, 0.50, 1.00;
-    theta_b, INV_GAMMA1_PDF, 0.10, 1.00;
+    pi_ss, normal_pdf, 1.005, 0.1;
+    phi_dx, normal_pdf, 0.13, 0.02;
+    theta_p, INV_GAMMA1_PDF, 0.5, 0.1;
+    theta_w, INV_GAMMA1_PDF, 0.5, 0.1;
+    theta_mp, INV_GAMMA1_PDF, 0.10, 0.1;
+    theta_g, INV_GAMMA1_PDF, 0.50, 0.1;
+    theta_mu, INV_GAMMA1_PDF, 0.50, 0.1;
+    theta_b, INV_GAMMA1_PDF, 0.10, 0.1;
 end;
 
+
 // Fix parameters causing issues
-phi_x = 0.13; // Fixed to calibrated value
-xi = 5; // Fixed to calibrated value
+
 
 // Provide initial values for estimated parameters within prior bounds
 estimated_params_init;
     aalpha, 0.3;
     ip, 0.24;
     iw, 0.5;
-    gammam, 0.5;
+    gammam, 0.005;
     h, 0.5;
     lambda_p_ss, 0.15;
     lambda_w_ss, 0.15;
     L_ss, 0.3;
-    pi_ss, 1.02;
-    bbeta, 0.25;
+    pi_ss, 1.005;
+    bbeta, 0.99;
     nu, 2;
     zeta_p, 0.84;
     zeta_w, 0.7;
     s2prime, 4;
     phi_pi, 1.7;
+    phi_x, 0.13; // Fixed to calibrated value
+    xi, 5; // Fixed to calibrated value
     phi_dx, 0.13;
     rho_R, 0.6;
     rho_mp, 0.4;
     rho_z, 0.6;
     rho_g, 0.6;
-    rho_mu, 0.6;
+    rho_mu, 0.7;
     rho_p, 0.6;
     rho_w, 0.6;
     rho_b, 0.6;
     theta_p, 0.5;
     theta_w, 0.5;
     theta_mp, 0.10;
-    theta_z, 0.50;
     theta_g, 0.50;
     theta_mu, 0.50;
     theta_b, 0.10;
 end;
 
 
-// Observed variables for estimation
-varobs y c i ppi R L;
+// dynare_sensitivity
+dynare_sensitivity;
+identification(order=1, advanced=1);
+
+
+
 
 // Estimation command
-estimation(datafile='model_data.mat', mode_compute=6, mh_replic=120000, mh_jscale=0.4);
+estimation(datafile='model_data.mat', prior_trunc=0, mode_compute=3, mh_replic=120000, mh_jscale=0.56);
